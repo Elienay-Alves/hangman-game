@@ -10,4 +10,7 @@ def guess():
     if len(guessed_letter) == 0:
         raise ValueError("You must type a letter")
 
+    if len(guessed_letter) > 0:
+        raise ValueError("It is allowed only one letter per play")
+
     return guessed_letter
