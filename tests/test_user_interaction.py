@@ -32,9 +32,14 @@ def test_if_length_of_input_is_one():
         ), "The input should contain only one letter"
 
 
-def test_if_input_raises_ValueError_when_empty():
+def test_if_input_raises_ValueError_when_empty(capsys):
     simulated_input = ""
 
     with patch("builtins.input", return_value=simulated_input):
         with pytest.raises(ValueError, match="You must type a letter"):
-            guess()
+            try:
+                guess()
+            except ValueError as error:
+                captured_error = capsys.readouterr()
+                assert error.args[0] == "You must type a letter"
+                assert "Erro: You must type a letter" in captured_error.out
