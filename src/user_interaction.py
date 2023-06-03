@@ -1,16 +1,36 @@
 import re
+import random
+from unidecode import unidecode
+from src.data_list import word_list
 
 
-def guess():
-    guessed_letter = input("Guess a letter: ").lower()
+CHOSEN_WORD = random.choice(word_list)
+WORD_DUNDER_LIST = ["_"] * len(CHOSEN_WORD)
+WORD_DUNDER_STR = "".join(WORD_DUNDER_LIST)
 
-    if re.search(r"[\d+\-*/%&$#@!~^]", guessed_letter):
+
+def guess_input():
+    guess = input("Guess a letter: ").lower()
+
+    if re.search(r"[\d+\-*/%&$#@!~^]", guess):
         raise ValueError("You can type only letter")
 
-    if len(guessed_letter) == 0:
+    if len(guess) == 0:
         raise ValueError("You must type a letter")
 
-    if len(guessed_letter) > 1:
+    if len(guess) > 1:
         raise ValueError("It is allowed only one letter per play")
 
-    return guessed_letter
+    return guess
+
+
+def letter_verification(user_choice):
+    answer = ""
+    for index, letter in enumerate(CHOSEN_WORD):
+        if unidecode(letter) == unidecode(user_choice):
+            WORD_DUNDER_LIST[index] = letter
+            answer += "Right\n"
+        else:
+            answer += "Wrong\n"
+
+    return answer
